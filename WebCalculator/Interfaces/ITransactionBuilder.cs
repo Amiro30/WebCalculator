@@ -7,6 +7,6 @@ namespace WebCalculator.Interfaces
 {
     public interface ITransactionBuilder
     {
-        Transaction TransactionCreate(Transaction data);
+        Operation TransactionCreate(Operation data);
     }
 }

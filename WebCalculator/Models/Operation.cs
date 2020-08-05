@@ -2,7 +2,7 @@
 
 namespace WebCalculator.Models
 {
-    public class Transaction
+    public class Operation
     {
         public int Id { get; set; }
         public double Result { get; set; }

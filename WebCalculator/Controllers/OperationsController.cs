@@ -26,7 +26,7 @@ namespace WebCalculator.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Transaction>>> GetOperations()
+        public async Task<ActionResult<IEnumerable<Operation>>> GetOperations()
        {
             return await _context.Transactions.ToListAsync();
         }
@@ -36,7 +36,7 @@ namespace WebCalculator.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<ActionResult<Transaction>> GetOperation(int id)
+        public async Task<ActionResult<Operation>> GetOperation(int id)
         {
             var operation = await _context.Transactions.FindAsync(id);
 
@@ -47,10 +47,10 @@ namespace WebCalculator.Controllers
 
             return operation;
         }
-        
+
 
         /// <summary>
-        /// Addition 
+        /// Calculate (operation type: +,-,*,/)
         /// </summary>
         /// <param name="operation"></param>
         /// <remarks>
@@ -64,87 +64,9 @@ namespace WebCalculator.Controllers
         ///     }
         ///
         /// </remarks>  
-        /// <returns>Sum</returns>
-        [HttpPost("Add")]
-        public async Task<ActionResult<Transaction>> AddOperation(Transaction operation)
-        {
-            _builder.TransactionCreate(operation);
-
-            _context.Transactions.Add(operation);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(GetOperation), new { id = operation.Id }, operation);
-        }
-        /// <summary>
-        /// Subtraction
-        /// </summary>
-        /// <param name="operation"></param>
-        /// <remarks>
-        /// Sample request:
-        ///
-        ///     POST /Todo
-        ///     {
-        ///        "FirstNumber": "10",
-        ///        "SecondNumber": "5",
-        ///        "OperationType": "-"
-        ///     }
-        ///
-        /// </remarks>  
-        /// <returns>Result of substraction</returns>
-        [HttpPost("Sub")]
-        public async Task<ActionResult<Transaction>> SubOperation(Transaction operation)
-        {
-            _builder.TransactionCreate(operation);
-
-            _context.Transactions.Add(operation);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(GetOperation), new { id = operation.Id }, operation);
-        }
-        /// <summary>
-        /// Multiplication
-        /// </summary>
-        /// <param name="operation"></param>
-        /// <remarks>
-        /// Sample request:
-        ///
-        ///     POST /Todo
-        ///     {
-        ///        "FirstNumber": "2",
-        ///        "SecondNumber": "2",
-        ///        "OperationType": "*"
-        ///     }
-        ///
-        /// </remarks>  
-        /// <returns>Mult result</returns>
-        [HttpPost("Mult")]
-        public async Task<ActionResult<Transaction>> MultOperation(Transaction operation)
-        {
-            _builder.TransactionCreate(operation);
-
-            _context.Transactions.Add(operation);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(GetOperation), new { id = operation.Id }, operation);
-        }
-        /// <summary>
-        /// Division
-        /// </summary>
-        /// <param name="operation"></param>
-        /// <remarks>
-        /// Sample request:
-        ///
-        ///     POST /Todo
-        ///     {
-        ///        "FirstNumber": "10",
-        ///        "SecondNumber": "2",
-        ///        "OperationType": "/"
-        ///     }
-        ///
-        /// </remarks>  
-        /// <returns>Div result</returns>
-        [HttpPost("Div")]
-        public async Task<ActionResult<Transaction>> DivOperation(Transaction operation)
+        /// <returns>result of operation</returns>
+        [HttpPost("Calculate")]
+        public async Task<ActionResult<Operation>> CalculateOperation(Operation operation)
         {
             _builder.TransactionCreate(operation);
 
@@ -158,7 +80,7 @@ namespace WebCalculator.Controllers
 
         // DELETE: api/Operations/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Transaction>> DeleteOperation(int id)
+        public async Task<ActionResult<Operation>> DeleteOperation(int id)
         {
             var operation = await _context.Transactions.FindAsync(id);
             if (operation == null)

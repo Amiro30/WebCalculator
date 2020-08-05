@@ -12,7 +12,7 @@ namespace WebCalculator.Service
 			_calc = calc;
 		}
 
-        public Transaction  TransactionCreate (Transaction data)
+        public Operation  TransactionCreate (Operation data)
         {
 			switch (data.OperationType)
 			{

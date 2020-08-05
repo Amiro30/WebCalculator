@@ -86,7 +86,7 @@ namespace WebCalculator
 
         private static void AddTestData(CalcContext context)
         {
-            var transaction1 = new Transaction
+            var transaction1 = new Operation
             {
                 Id = 1,
                 Result = 10,
@@ -97,7 +97,7 @@ namespace WebCalculator
 
             context.Transactions.Add(transaction1);
 
-            var transaction2 = new Transaction
+            var transaction2 = new Operation
             {
                 Id = 2,
                 Result = 55,
