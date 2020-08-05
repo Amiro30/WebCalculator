@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace WebCalculator.Models
 {
@@ -9,8 +6,11 @@ namespace WebCalculator.Models
     {
         public int Id { get; set; }
         public double Result { get; set; }
+        [Required]
         public int FirstNumber { get; set; }
+        [Required]
         public int SecondNumber { get; set; }
+        [Required]
         public char OperationType { get; set; }
     }
 }

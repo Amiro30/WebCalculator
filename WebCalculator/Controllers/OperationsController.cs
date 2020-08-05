@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebCalculator.Models;
@@ -22,16 +20,19 @@ namespace WebCalculator.Controllers
             _context = context;
         }
 
-        // GET: api/Operations
+        /// <summary>
+        /// Get all records of calculations in current session
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Transaction>>> GetOperations()
-        {
+       {
             return await _context.Operations.ToListAsync();
         }
 
         // GET: api/Operations/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Transaction>> GetOperation(long id)
+        public async Task<ActionResult<Transaction>> GetOperation(int id)
         {
             var operation = await _context.Operations.FindAsync(id);
 
@@ -42,40 +43,24 @@ namespace WebCalculator.Controllers
 
             return operation;
         }
-
-        // PUT: api/Operations/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutOperation(long id, Transaction operation)
-        {
-            if (id != operation.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(operation).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!OperationExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
         
+
+        /// <summary>
+        /// Addition 
+        /// </summary>
+        /// <param name="operation"></param>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /Todo
+        ///     {
+        ///        "FirstNumber": "2",
+        ///        "SecondNumber": "3",
+        ///        "OperationType": "+"
+        ///     }
+        ///
+        /// </remarks>  
+        /// <returns>Sum</returns>
         [HttpPost("Add")]
         public async Task<ActionResult<Transaction>> AddOperation(Transaction operation)
         {
@@ -86,7 +71,22 @@ namespace WebCalculator.Controllers
 
             return CreatedAtAction(nameof(GetOperation), new { id = operation.Id }, operation);
         }
-
+        /// <summary>
+        /// Subtraction
+        /// </summary>
+        /// <param name="operation"></param>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /Todo
+        ///     {
+        ///        "FirstNumber": "10",
+        ///        "SecondNumber": "5",
+        ///        "OperationType": "-"
+        ///     }
+        ///
+        /// </remarks>  
+        /// <returns>Result of substraction</returns>
         [HttpPost("Sub")]
         public async Task<ActionResult<Transaction>> SubOperation(Transaction operation)
         {
@@ -97,7 +97,22 @@ namespace WebCalculator.Controllers
 
             return CreatedAtAction(nameof(GetOperation), new { id = operation.Id }, operation);
         }
-
+        /// <summary>
+        /// Multiplication
+        /// </summary>
+        /// <param name="operation"></param>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /Todo
+        ///     {
+        ///        "FirstNumber": "2",
+        ///        "SecondNumber": "2",
+        ///        "OperationType": "*"
+        ///     }
+        ///
+        /// </remarks>  
+        /// <returns>Mult result</returns>
         [HttpPost("Mult")]
         public async Task<ActionResult<Transaction>> MultOperation(Transaction operation)
         {
@@ -108,7 +123,22 @@ namespace WebCalculator.Controllers
 
             return CreatedAtAction(nameof(GetOperation), new { id = operation.Id }, operation);
         }
-
+        /// <summary>
+        /// Division
+        /// </summary>
+        /// <param name="operation"></param>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /Todo
+        ///     {
+        ///        "FirstNumber": "10",
+        ///        "SecondNumber": "2",
+        ///        "OperationType": "/"
+        ///     }
+        ///
+        /// </remarks>  
+        /// <returns>Div result</returns>
         [HttpPost("Div")]
         public async Task<ActionResult<Transaction>> DivOperation(Transaction operation)
         {
@@ -124,7 +154,7 @@ namespace WebCalculator.Controllers
 
         // DELETE: api/Operations/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Transaction>> DeleteOperation(long id)
+        public async Task<ActionResult<Transaction>> DeleteOperation(int id)
         {
             var operation = await _context.Operations.FindAsync(id);
             if (operation == null)
@@ -138,7 +168,7 @@ namespace WebCalculator.Controllers
             return operation;
         }
 
-        private bool OperationExists(long id)
+        private bool OperationExists(int id)
         {
             return _context.Operations.Any(e => e.Id == id);
         }
