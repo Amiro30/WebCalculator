@@ -28,14 +28,17 @@ namespace WebCalculator.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Transaction>>> GetOperations()
        {
-            return await _context.Operations.ToListAsync();
+            return await _context.Transactions.ToListAsync();
         }
 
-        // GET: api/Operations/5
+        /// <summary>
+        /// Find record by it's ID
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<Transaction>> GetOperation(int id)
         {
-            var operation = await _context.Operations.FindAsync(id);
+            var operation = await _context.Transactions.FindAsync(id);
 
             if (operation == null)
             {
@@ -67,7 +70,7 @@ namespace WebCalculator.Controllers
         {
             _builder.TransactionCreate(operation);
 
-            _context.Operations.Add(operation);
+            _context.Transactions.Add(operation);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction(nameof(GetOperation), new { id = operation.Id }, operation);
@@ -93,7 +96,7 @@ namespace WebCalculator.Controllers
         {
             _builder.TransactionCreate(operation);
 
-            _context.Operations.Add(operation);
+            _context.Transactions.Add(operation);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction(nameof(GetOperation), new { id = operation.Id }, operation);
@@ -119,7 +122,7 @@ namespace WebCalculator.Controllers
         {
             _builder.TransactionCreate(operation);
 
-            _context.Operations.Add(operation);
+            _context.Transactions.Add(operation);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction(nameof(GetOperation), new { id = operation.Id }, operation);
@@ -145,7 +148,7 @@ namespace WebCalculator.Controllers
         {
             _builder.TransactionCreate(operation);
 
-            _context.Operations.Add(operation);
+            _context.Transactions.Add(operation);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction(nameof(GetOperation), new { id = operation.Id }, operation);
@@ -157,13 +160,13 @@ namespace WebCalculator.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<Transaction>> DeleteOperation(int id)
         {
-            var operation = await _context.Operations.FindAsync(id);
+            var operation = await _context.Transactions.FindAsync(id);
             if (operation == null)
             {
                 return NotFound();
             }
 
-            _context.Operations.Remove(operation);
+            _context.Transactions.Remove(operation);
             await _context.SaveChangesAsync();
 
             return operation;
@@ -171,7 +174,7 @@ namespace WebCalculator.Controllers
 
         private bool OperationExists(int id)
         {
-            return _context.Operations.Any(e => e.Id == id);
+            return _context.Transactions.Any(e => e.Id == id);
         }
     }
 }

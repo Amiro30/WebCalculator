@@ -1,5 +1,4 @@
-﻿using System.Threading;
-using WebCalculator.Models;
+﻿using WebCalculator.Models;
 using WebCalculator.Interfaces;
 
 namespace WebCalculator.Service
@@ -15,26 +14,6 @@ namespace WebCalculator.Service
 
         public Transaction  TransactionCreate (Transaction data)
         {
-			//switch (data.OperationType)
-			//{
-			//	case '+':
-			//		data.Result = calc.Add(data.FirstNumber, data.SecondNumber);
-			//		break;
-
-			//	case '-':
-			//		data.Result = calc.Sub(data.FirstNumber, data.SecondNumber);
-			//		break;
-
-			//	case '*':
-			//		data.Result = calc.Multiplication(data.FirstNumber, data.SecondNumber);
-			//		break;
-
-			//	case '/':
-			//		data.Result = calc.Division(data.FirstNumber, data.SecondNumber);
-			//		break;
-
-			//}
-
 			switch (data.OperationType)
 			{
 				case '+':

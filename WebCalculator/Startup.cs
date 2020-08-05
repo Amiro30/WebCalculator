@@ -95,7 +95,7 @@ namespace WebCalculator
                 OperationType = '+'
             };
 
-            context.Operations.Add(transaction1);
+            context.Transactions.Add(transaction1);
 
             var transaction2 = new Transaction
             {
@@ -106,7 +106,7 @@ namespace WebCalculator
                 OperationType = '-'
             };
 
-            context.Operations.Add(transaction2);
+            context.Transactions.Add(transaction2);
 
             context.SaveChanges();
         }

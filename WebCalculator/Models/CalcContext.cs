@@ -8,6 +8,6 @@ namespace WebCalculator.Models
         {
 
         }
-        public DbSet<Transaction> Operations { get; set; }
+        public DbSet<Transaction> Transactions { get; set; }
     }
 }
