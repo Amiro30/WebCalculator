@@ -5,6 +5,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WebCalculator.Models;
 using Microsoft.EntityFrameworkCore;
+using WebCalculator.Options;
+using Swashbuckle.AspNetCore.Swagger;
+using Microsoft.OpenApi.Models;
 
 namespace WebCalculator
 {
@@ -24,6 +27,13 @@ namespace WebCalculator
                opt.UseInMemoryDatabase("CalcHistory"));
 
             services.AddControllers().AddNewtonsoftJson();
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Calculator API", Version = "v1" });
+            });
+            
+
         }
 
         // This method to configure the HTTP request pipeline.
@@ -33,6 +43,17 @@ namespace WebCalculator
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            var swaggerOptions = new Options.SwaggerOptions();
+            Configuration.GetSection(nameof(Options.SwaggerOptions)).Bind(swaggerOptions);
+
+            app.UseSwagger(option => { option.RouteTemplate = swaggerOptions.JsonRoute; });
+            app.UseSwaggerUI(option =>
+            {
+                option.SwaggerEndpoint(swaggerOptions.UIEndpoint, swaggerOptions.Description);
+            });
+
+
             app.UseStaticFiles();
 
             app.UseHttpsRedirection();
