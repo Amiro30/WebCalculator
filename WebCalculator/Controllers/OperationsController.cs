@@ -98,6 +98,28 @@ namespace WebCalculator.Controllers
             return CreatedAtAction(nameof(GetOperation), new { id = operation.Id }, operation);
         }
 
+        [HttpPost("Mult")]
+        public async Task<ActionResult<Transaction>> MultOperation(Transaction operation)
+        {
+            builder.TransactionCreate(operation);
+
+            _context.Operations.Add(operation);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetOperation), new { id = operation.Id }, operation);
+        }
+
+        [HttpPost("Div")]
+        public async Task<ActionResult<Transaction>> DivOperation(Transaction operation)
+        {
+            builder.TransactionCreate(operation);
+
+            _context.Operations.Add(operation);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetOperation), new { id = operation.Id }, operation);
+        }
+
 
 
         // DELETE: api/Operations/5

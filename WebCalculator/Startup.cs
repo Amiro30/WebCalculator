@@ -33,6 +33,7 @@ namespace WebCalculator
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseStaticFiles();
 
             app.UseHttpsRedirection();
 
