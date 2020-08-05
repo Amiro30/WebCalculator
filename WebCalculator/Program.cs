@@ -22,7 +22,7 @@ namespace WebCalculator
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
-                });
+                }).UseDefaultServiceProvider(options => options.ValidateScopes = false);
     }
 #pragma warning restore CS1591
 }

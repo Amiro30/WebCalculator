@@ -1,10 +1,5 @@
-﻿using Microsoft.AspNetCore.JsonPatch.Operations;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using WebCalculator.Interfaces;
-using WebCalculator.Models;
+﻿using WebCalculator.Interfaces;
+
 
 namespace WebCalculator.Service
 {

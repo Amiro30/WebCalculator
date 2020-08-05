@@ -26,9 +26,9 @@ namespace WebCalculator
         // This method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-           
+
             services.AddDbContext<CalcContext>(opt =>
-               opt.UseInMemoryDatabase("CalcHistory")); 
+               opt.UseInMemoryDatabase("CalcHistory"));
 
             services.AddTransient<ICalculator, Calculator>();
             services.AddTransient<ITransactionBuilder, TransactionBuilder>();
@@ -52,6 +52,14 @@ namespace WebCalculator
                 app.UseDeveloperExceptionPage();
             }
 
+            //seed database
+            using (var serviceScope = app.ApplicationServices.CreateScope())
+            {
+                var context = app.ApplicationServices.GetService<CalcContext>();
+                AddTestData(context);
+            }
+
+            //swagger configure
             var swaggerOptions = new Options.SwaggerOptions();
             Configuration.GetSection(nameof(Options.SwaggerOptions)).Bind(swaggerOptions);
 
@@ -75,5 +83,33 @@ namespace WebCalculator
                 endpoints.MapControllers();
             });
         }
+
+        private static void AddTestData(CalcContext context)
+        {
+            var transaction1 = new Transaction
+            {
+                Id = 1,
+                Result = 10,
+                FirstNumber = 5,
+                SecondNumber = 5,
+                OperationType = '+'
+            };
+
+            context.Operations.Add(transaction1);
+
+            var transaction2 = new Transaction
+            {
+                Id = 2,
+                Result = 55,
+                FirstNumber = 65,
+                SecondNumber = 10,
+                OperationType = '-'
+            };
+
+            context.Operations.Add(transaction2);
+
+            context.SaveChanges();
+        }
+
     }
 }
