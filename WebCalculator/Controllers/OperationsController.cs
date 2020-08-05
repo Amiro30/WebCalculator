@@ -28,7 +28,7 @@ namespace WebCalculator.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Operation>>> GetOperations()
        {
-            return await _context.Transactions.ToListAsync();
+            return await _context.Operations.ToListAsync();
         }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace WebCalculator.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Operation>> GetOperation(int id)
         {
-            var operation = await _context.Transactions.FindAsync(id);
+            var operation = await _context.Operations.FindAsync(id);
 
             if (operation == null)
             {
@@ -70,7 +70,7 @@ namespace WebCalculator.Controllers
         {
             _builder.TransactionCreate(operation);
 
-            _context.Transactions.Add(operation);
+            _context.Operations.Add(operation);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction(nameof(GetOperation), new { id = operation.Id }, operation);
@@ -82,13 +82,13 @@ namespace WebCalculator.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<Operation>> DeleteOperation(int id)
         {
-            var operation = await _context.Transactions.FindAsync(id);
+            var operation = await _context.Operations.FindAsync(id);
             if (operation == null)
             {
                 return NotFound();
             }
 
-            _context.Transactions.Remove(operation);
+            _context.Operations.Remove(operation);
             await _context.SaveChangesAsync();
 
             return operation;
@@ -96,7 +96,7 @@ namespace WebCalculator.Controllers
 
         private bool OperationExists(int id)
         {
-            return _context.Transactions.Any(e => e.Id == id);
+            return _context.Operations.Any(e => e.Id == id);
         }
     }
 }
