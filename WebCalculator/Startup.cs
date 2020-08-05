@@ -5,7 +5,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WebCalculator.Models;
 using Microsoft.EntityFrameworkCore;
-using Swashbuckle.AspNetCore.Swagger;
+using WebCalculator.Interfaces;
+using WebCalculator.Service;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 using System.IO;
@@ -25,8 +26,12 @@ namespace WebCalculator
         // This method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+           
             services.AddDbContext<CalcContext>(opt =>
-               opt.UseInMemoryDatabase("CalcHistory"));
+               opt.UseInMemoryDatabase("CalcHistory")); 
+
+            services.AddTransient<ICalculator, Calculator>();
+            services.AddTransient<ITransactionBuilder, TransactionBuilder>();
 
             services.AddControllers().AddNewtonsoftJson();
 

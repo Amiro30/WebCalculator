@@ -1,32 +1,60 @@
-﻿using WebCalculator.Models;
+﻿using System.Threading;
+using WebCalculator.Models;
+using WebCalculator.Interfaces;
 
 namespace WebCalculator.Service
 {
-    public class TransactionBuilder
+    public class TransactionBuilder:ITransactionBuilder
     {
-        Calculator calc = new Calculator();
+		private readonly ICalculator _calc;
+
+		public TransactionBuilder(ICalculator calc)
+		{
+			_calc = calc;
+		}
 
         public Transaction  TransactionCreate (Transaction data)
         {
+			//switch (data.OperationType)
+			//{
+			//	case '+':
+			//		data.Result = calc.Add(data.FirstNumber, data.SecondNumber);
+			//		break;
+
+			//	case '-':
+			//		data.Result = calc.Sub(data.FirstNumber, data.SecondNumber);
+			//		break;
+
+			//	case '*':
+			//		data.Result = calc.Multiplication(data.FirstNumber, data.SecondNumber);
+			//		break;
+
+			//	case '/':
+			//		data.Result = calc.Division(data.FirstNumber, data.SecondNumber);
+			//		break;
+
+			//}
+
 			switch (data.OperationType)
 			{
 				case '+':
-					data.Result = calc.Add(data.FirstNumber, data.SecondNumber);
+					data.Result = _calc.Add(data.FirstNumber, data.SecondNumber);
 					break;
 
 				case '-':
-					data.Result = calc.Sub(data.FirstNumber, data.SecondNumber);
+					data.Result = _calc.Sub(data.FirstNumber, data.SecondNumber);
 					break;
 
 				case '*':
-					data.Result = calc.Multiplication(data.FirstNumber, data.SecondNumber);
+					data.Result = _calc.Multiplication(data.FirstNumber, data.SecondNumber);
 					break;
 
 				case '/':
-					data.Result = calc.Division(data.FirstNumber, data.SecondNumber);
+					data.Result = _calc.Division(data.FirstNumber, data.SecondNumber);
 					break;
 
 			}
+
 			return data;
 		}
 

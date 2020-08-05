@@ -3,11 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebCalculator.Interfaces;
 using WebCalculator.Models;
 
 namespace WebCalculator.Service
 {
-    public class Calculator
+    public class Calculator:ICalculator
     {
         public double Add(int numA, int numB)
         { return (numA + numB); }

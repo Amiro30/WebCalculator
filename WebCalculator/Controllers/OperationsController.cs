@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebCalculator.Models;
-using WebCalculator.Service;
+using WebCalculator.Interfaces;
 
 namespace WebCalculator.Controllers
 {
@@ -13,11 +13,12 @@ namespace WebCalculator.Controllers
     public class OperationsController : ControllerBase
     {
         private readonly CalcContext _context;
-        private TransactionBuilder builder = new TransactionBuilder();
+        private readonly ITransactionBuilder _builder;
 
-        public OperationsController(CalcContext context)
+        public OperationsController(CalcContext context, ITransactionBuilder builder)
         {
             _context = context;
+            _builder = builder;
         }
 
         /// <summary>
@@ -64,7 +65,7 @@ namespace WebCalculator.Controllers
         [HttpPost("Add")]
         public async Task<ActionResult<Transaction>> AddOperation(Transaction operation)
         {
-            builder.TransactionCreate(operation);
+            _builder.TransactionCreate(operation);
 
             _context.Operations.Add(operation);
             await _context.SaveChangesAsync();
@@ -90,7 +91,7 @@ namespace WebCalculator.Controllers
         [HttpPost("Sub")]
         public async Task<ActionResult<Transaction>> SubOperation(Transaction operation)
         {
-            builder.TransactionCreate(operation);
+            _builder.TransactionCreate(operation);
 
             _context.Operations.Add(operation);
             await _context.SaveChangesAsync();
@@ -116,7 +117,7 @@ namespace WebCalculator.Controllers
         [HttpPost("Mult")]
         public async Task<ActionResult<Transaction>> MultOperation(Transaction operation)
         {
-            builder.TransactionCreate(operation);
+            _builder.TransactionCreate(operation);
 
             _context.Operations.Add(operation);
             await _context.SaveChangesAsync();
@@ -142,7 +143,7 @@ namespace WebCalculator.Controllers
         [HttpPost("Div")]
         public async Task<ActionResult<Transaction>> DivOperation(Transaction operation)
         {
-            builder.TransactionCreate(operation);
+            _builder.TransactionCreate(operation);
 
             _context.Operations.Add(operation);
             await _context.SaveChangesAsync();
