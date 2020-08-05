@@ -1,20 +1,21 @@
-﻿using WebCalculator.Interfaces;
-
+﻿using System;
+using WebCalculator.Interfaces;
+using WebCalculator.Models;
 
 namespace WebCalculator.Service
 {
     public class Calculator:ICalculator
     {
-        public double Add(int numA, int numB)
-        { return (numA + numB); }
-
-        public double Sub(int numA, int numB)
-        { return (numA - numB); }
-
-        public double Multiplication(int numA, int numB)
-        { return (numA * numB); }
-        public double Division(int numA, int numB)
-        { return (numA / numB); }
-
-    }
+		public decimal Execute(decimal a, decimal b, OperationType type)
+		{
+			switch (type)
+			{
+				case OperationType.Add: return a + b;
+				case OperationType.Sub: return a - b;
+				case OperationType.Mult: return a * b;
+				case OperationType.Div: return a / b;
+				default: throw new NotSupportedException();
+			}
+		}
+	}
 }

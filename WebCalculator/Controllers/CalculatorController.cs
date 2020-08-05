@@ -8,37 +8,38 @@ using WebCalculator.Interfaces;
 
 namespace WebCalculator.Controllers
 {
-    [Route("api/Operations")]
+    [Route("api/v1/calc")]
     [ApiController]
-    public class OperationsController : ControllerBase
+    public class CalculatorController : ControllerBase
     {
         private readonly CalcContext _context;
-        private readonly ITransactionBuilder _builder;
+        private readonly ICalculator _calculator;
 
-        public OperationsController(CalcContext context, ITransactionBuilder builder)
+        public CalculatorController(CalcContext context, ICalculator calculator)
         {
             _context = context;
-            _builder = builder;
+            _calculator = calculator;
         }
 
         /// <summary>
         /// Get all records of calculations in current session
         /// </summary>
         /// <returns></returns>
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Operation>>> GetOperations()
-       {
-            return await _context.Operations.ToListAsync();
+        [HttpGet("history")]
+        public Task<List<HistoryItem>> GetHistory()
+        {
+            return _context.History.ToListAsync();
         }
+
 
         /// <summary>
         /// Find record by it's ID
         /// </summary>
         /// <returns></returns>
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Operation>> GetOperation(int id)
+        [HttpGet("history/{id}")]
+        public async Task<ActionResult<HistoryItem>> GetHistoryItem(int id)
         {
-            var operation = await _context.Operations.FindAsync(id);
+            var operation = await _context.History.FindAsync(id);
 
             if (operation == null)
             {
@@ -50,9 +51,8 @@ namespace WebCalculator.Controllers
 
 
         /// <summary>
-        /// Calculate (operation type: +,-,*,/)
+        /// Execute Method
         /// </summary>
-        /// <param name="operation"></param>
         /// <remarks>
         /// Sample request:
         ///
@@ -65,38 +65,39 @@ namespace WebCalculator.Controllers
         ///
         /// </remarks>  
         /// <returns>result of operation</returns>
-        [HttpPost("Calculate")]
-        public async Task<ActionResult<Operation>> CalculateOperation(Operation operation)
+        [HttpPost("execute")]
+        public async Task<decimal> Execute(decimal a, decimal b, OperationType type)
         {
-            _builder.TransactionCreate(operation);
+            var result = _calculator.Execute(a, b, type);
 
-            _context.Operations.Add(operation);
+            var item = new HistoryItem
+            {
+                Left = a,
+                Right = b,
+                Type = type
+            };
+
+            _context.History.Add(item);
+
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetOperation), new { id = operation.Id }, operation);
+            return result;
         }
 
 
-
-        // DELETE: api/Operations/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<Operation>> DeleteOperation(int id)
+        [HttpDelete("history/{id}")]
+        public async Task<ActionResult<HistoryItem>> DeleteOperation(int id)
         {
-            var operation = await _context.Operations.FindAsync(id);
+            var operation = await _context.History.FindAsync(id);
             if (operation == null)
             {
                 return NotFound();
             }
 
-            _context.Operations.Remove(operation);
+            _context.History.Remove(operation);
             await _context.SaveChangesAsync();
 
             return operation;
-        }
-
-        private bool OperationExists(int id)
-        {
-            return _context.Operations.Any(e => e.Id == id);
         }
     }
 }

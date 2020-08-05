@@ -31,7 +31,6 @@ namespace WebCalculator
                opt.UseInMemoryDatabase("CalcHistory"));
 
             services.AddTransient<ICalculator, Calculator>();
-            services.AddTransient<ITransactionBuilder, TransactionBuilder>();
 
             services.AddControllers().AddNewtonsoftJson();
 
@@ -56,7 +55,7 @@ namespace WebCalculator
             using (var serviceScope = app.ApplicationServices.CreateScope())
             {
                 var context = app.ApplicationServices.GetService<CalcContext>();
-                AddTestData(context);
+               // AddTestData(context);
             }
 
             //swagger configure
@@ -84,32 +83,32 @@ namespace WebCalculator
             });
         }
 
-        private static void AddTestData(CalcContext context)
-        {
-            var transaction1 = new Operation
-            {
-                Id = 1,
-                Result = 10,
-                FirstNumber = 5,
-                SecondNumber = 5,
-                OperationType = '+'
-            };
+        //private static void AddTestData(CalcContext context)
+        //{
+        //    var transaction1 = new History
+        //    {
+        //        Id = 1,
+        //        Result = 10,
+        //        FirstNumber = 5,
+        //        SecondNumber = 5,
+        //        OperationType = '+'
+        //    };
 
-            context.Operations.Add(transaction1);
+        //    context.Operations.Add(transaction1);
 
-            var transaction2 = new Operation
-            {
-                Id = 2,
-                Result = 55,
-                FirstNumber = 65,
-                SecondNumber = 10,
-                OperationType = '-'
-            };
+        //    var transaction2 = new History
+        //    {
+        //        Id = 2,
+        //        Result = 55,
+        //        FirstNumber = 65,
+        //        SecondNumber = 10,
+        //        OperationType = '-'
+        //    };
 
-            context.Operations.Add(transaction2);
+        //    context.Operations.Add(transaction2);
 
-            context.SaveChanges();
-        }
+        //    context.SaveChanges();
+        //}
 
     }
 }

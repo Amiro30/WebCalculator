@@ -8,7 +8,7 @@ namespace WebCalculator.Models
         {
 
         }
-        public DbSet<Operation> Operations { get; set; }
+        public DbSet<HistoryItem> History { get; set; }
 
     }
 }
