@@ -72,6 +72,7 @@ namespace WebCalculator.Controllers
 
             var item = new HistoryItem
             {
+                Result = result,
                 Left = a,
                 Right = b,
                 Type = type
@@ -86,7 +87,7 @@ namespace WebCalculator.Controllers
 
 
         [HttpDelete("history/{id}")]
-        public async Task<ActionResult<HistoryItem>> DeleteOperation(int id)
+        public async Task<ActionResult<HistoryItem>> DeleteOperation(long id)
         {
             var operation = await _context.History.FindAsync(id);
             if (operation == null)

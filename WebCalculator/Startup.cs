@@ -11,6 +11,7 @@ using Microsoft.OpenApi.Models;
 using System.Reflection;
 using System.IO;
 using System;
+using System.Text.Json.Serialization;
 
 namespace WebCalculator
 {
@@ -32,7 +33,10 @@ namespace WebCalculator
 
             services.AddTransient<ICalculator, Calculator>();
 
-            services.AddControllers().AddNewtonsoftJson();
+            services.AddControllers().AddNewtonsoftJson(); 
+            services.AddControllersWithViews()
+                .AddJsonOptions(options =>
+                    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 
             services.AddSwaggerGen(c =>
             {
@@ -49,13 +53,6 @@ namespace WebCalculator
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-            }
-
-            //seed database
-            using (var serviceScope = app.ApplicationServices.CreateScope())
-            {
-                var context = app.ApplicationServices.GetService<CalcContext>();
-               // AddTestData(context);
             }
 
             //swagger configure
@@ -82,33 +79,5 @@ namespace WebCalculator
                 endpoints.MapControllers();
             });
         }
-
-        //private static void AddTestData(CalcContext context)
-        //{
-        //    var transaction1 = new History
-        //    {
-        //        Id = 1,
-        //        Result = 10,
-        //        FirstNumber = 5,
-        //        SecondNumber = 5,
-        //        OperationType = '+'
-        //    };
-
-        //    context.Operations.Add(transaction1);
-
-        //    var transaction2 = new History
-        //    {
-        //        Id = 2,
-        //        Result = 55,
-        //        FirstNumber = 65,
-        //        SecondNumber = 10,
-        //        OperationType = '-'
-        //    };
-
-        //    context.Operations.Add(transaction2);
-
-        //    context.SaveChanges();
-        //}
-
     }
 }
